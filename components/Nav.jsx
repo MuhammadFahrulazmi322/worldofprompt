@@ -43,7 +43,7 @@ const Nav = () => {
             <button 
                 type="button" onClick={signOut}
                 className="outline_btn">
-                SignOut
+                Sign out
             </button>
 
             <Link href="/profile">
@@ -58,13 +58,21 @@ const Nav = () => {
         </div> : (
           <>
           {providers && Object.values(providers).map((provider) => (
-           <button
+            //image logo google
+            <button
             type="button"
             key={provider.name}
             onClick={() => signIn(provider.id)}
-            className="black_btn"
+            className="black_btn flex flex-row gap-2 items-center"
            >
-            SignIn
+            <Image
+              src="/assets/icons/logo-google.svg"
+              alt="logo"
+              width={24}
+              height={24}
+              className="object-contain"
+            />
+             Sign in
            </button>
           ))}
           </>
@@ -107,7 +115,7 @@ const Nav = () => {
               }}
               className="mt-5 w-full black_btn"
             >
-              SignOut
+              Sign out
             </button>
           </div>
         )}
@@ -119,9 +127,16 @@ const Nav = () => {
             type="button"
             key={provider.name}
             onClick={() => signIn(provider.id)}
-            className="black_btn"
+            className="black_btn flex flex-row gap-2 items-center"
            >
-            SignIn
+            <Image
+              src="/assets/icons/logo-google.svg"
+              alt="logo"
+              width={24}
+              height={24}
+              className="object-contain"
+            />
+            Sign in
            </button>
           ))}
           </>
