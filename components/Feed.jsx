@@ -20,11 +20,36 @@ const PromptCardList = ({ data, handleTagClick, handleEdit, handleDelete }) => {
 } 
 
 const Feed = () => {
+  const [allPosts, setAllPosts] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [posts, setPosts] = useState([]);
-  const handleSearchText = (e) => {
+  const [searhResult, setSearchResult] = useState([]);
+  const [searchTimeout, setSearchTimeout] = useState(null);
+  
+
+  const filterPrompt = (searchText)=>{
+
+    const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
+    return allPosts.filter((item) => regex.test(item.creator.username) || regex.test(item.prompt) || regex.test(item.tag));
+  }
+
+  const handleSearchChange = (e) => {
 
     setSearchText(e.target.value)
+
+    setSearchTimeout(
+      setTimeout(() => {
+        const searchResult = filterPrompt(e.target.value);
+        setSearchResult(searchResult);
+      }, 500)
+    )
+  }
+
+  const handleTagClick = (tagName) => {
+
+    setSearchText(tagName);
+
+    const searchResult = filterPrompt(tagName);
+    setSearchResult(searchResult);
   }
   useEffect(() => {
     const fetchPosts = async () => {
@@ -32,11 +57,12 @@ const Feed = () => {
 
       const data = await response.json();
 
-      setPosts(data);
+      setAllPosts(data);
     }
 
     fetchPosts();
   }, [])
+
   return (
     <section className="feed">
 
@@ -45,19 +71,25 @@ const Feed = () => {
           type="text"
           placeholder="Search for a tag or a username"
           value={searchText}
-          onChange={handleSearchText}
+          onChange={handleSearchChange}
           required
           className="search_input peer"
         />
       </form>
+      {searchText ? (
+        <PromptCardList
+          data={searhResult}
+          handleTagClick={handleTagClick}
+        />
+      ) :
+        (
+          <PromptCardList
+            data={allPosts}
+            handleTagClick={handleTagClick}
+          />
+        )
 
-      <PromptCardList 
-        data = {posts}
-        handleTagClick = {() => {}}
-        handleEdit = {() => {}}
-        handleDelete = {() => {}}
-      />
-
+      }
     </section>
   )
 }

@@ -12,8 +12,8 @@ const RootLayout = ({ children }) => {
     <html lang="en">
       <body>
         <Provider>
-          <div className="main">
-            <div className="gradient" />
+          <div className="main bg-[url('/assets/images/bg-wop.png')] bg-cover bg-fixed bg-center bg-no-repeat saturate-150 brightness-[40%] ">
+            <div className=" " />
           </div>
 
           <main className="app">
