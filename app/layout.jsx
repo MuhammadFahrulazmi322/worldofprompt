@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
+import { Suspense } from "react";
 
 export const metadata = {
   title: "World Of Prompt",
@@ -13,13 +14,14 @@ const RootLayout = ({ children }) => {
       <body>
         <Provider>
           <div className="main bg-[url('/assets/images/bg-wop.png')] bg-cover bg-fixed bg-center bg-no-repeat saturate-150 brightness-[40%] ">
-            <div className=" " />
+            <div />
           </div>
-
-          <main className="app">
-            <Nav />
-            {children}
-          </main>
+          <Suspense>
+            <main className="app">
+              <Nav />
+              {children}
+            </main>
+          </Suspense>
         </Provider>
       </body>
     </html>
