@@ -27,20 +27,31 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt");
-    const data = await response.json();
-
-    setAllPosts(data);
+    try {
+      const response = await fetch(`/api/prompt?_=${Date.now()}`, {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
+      setAllPosts(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
-
+  
   useEffect(() => {
     fetchPosts();
+  
     const interval = setInterval(() => {
-      fetchPosts(); 
-    }, 5000); 
-
-    return () => clearInterval(interval); 
-  }, []); 
+      fetchPosts();
+    }, 60000); // fetch data every minute
+  
+    return () => clearInterval(interval); // cleanup interval on unmount
+  }, []);
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
