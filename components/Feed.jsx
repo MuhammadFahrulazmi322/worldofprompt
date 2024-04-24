@@ -35,7 +35,13 @@ const Feed = () => {
 
   useEffect(() => {
     fetchPosts();
+    const interval = setInterval(() => {
+      fetchPosts(); 
+    }, 5000); 
+
+    return () => clearInterval(interval); 
   }, []); 
+
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
     return allPosts.filter(
