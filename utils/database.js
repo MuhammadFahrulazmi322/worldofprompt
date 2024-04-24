@@ -13,8 +13,6 @@ export const connectToDB = async () =>{ // Asynchronous function to connect to t
     try {
         await mongoose.connect(process.env.MONGODB_URI,{ // Attempt to connect to the MongoDB database
             dbName: 'worldofprompt', // Specify the database name
-            useNewUrlParser: true, // Use the new URL parser
-            useUnifiedTopology: true // Use the new server discovery and monitoring engine
         });
         isConnected = true; // Set the isConnected flag to true upon successful connection
         console.log('MongoDB connected'); // Log message upon successful connection
