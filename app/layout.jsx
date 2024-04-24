@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
+import { RefreshProvider } from "@context/RefreshContext";
 import { Suspense } from "react";
 
 export const metadata = {
@@ -13,6 +14,7 @@ const RootLayout = ({ children }) => {
     <html lang="en">
       <body>
         <Provider>
+          <RefreshProvider>
           <div className="main bg-[url('/assets/images/bg-wop.png')] bg-cover bg-fixed bg-center bg-no-repeat saturate-150 brightness-[40%] ">
             <div />
           </div>
@@ -22,6 +24,7 @@ const RootLayout = ({ children }) => {
               {children}
             </main>
           </Suspense>
+          </RefreshProvider>
         </Provider>
       </body>
     </html>

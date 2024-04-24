@@ -46,12 +46,6 @@ const Feed = ({refresh}) => {
   
   useEffect(() => {
     fetchPosts();
-  
-    const interval = setInterval(() => {
-      fetchPosts();
-    }, 60000); // fetch data every minute
-  
-    return () => clearInterval(interval); // cleanup interval on unmount
   }, [refresh]);
 
   const filterPrompts = (searchtext) => {

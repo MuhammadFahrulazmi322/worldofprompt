@@ -4,8 +4,10 @@ import Form from '@components/Form'
 import React, { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useRefresh } from '@context/RefreshContext'
 
-const CreatePrompt = ({ triggerRefresh }) => { // Terima prop triggerRefresh
+const CreatePrompt = () => { 
+    const { triggerRefresh } = useRefresh();
     const router = useRouter();
     const { data: session } = useSession();
     const [submitting, setSubmitting] = useState(false);
