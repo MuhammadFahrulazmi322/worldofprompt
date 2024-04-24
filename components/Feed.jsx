@@ -20,6 +20,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
+  const [rerender, setRerender] = useState(false); // State to trigger rerender
 
   // Search states
   const [searchText, setSearchText] = useState("");
@@ -37,8 +38,8 @@ const Feed = () => {
         throw new Error("Failed to fetch data");
       }
       const data = await response.json();
-      console.log(data);
       setAllPosts(data);
+      setRerender(!rerender); // Toggle rerender state
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -52,7 +53,7 @@ const Feed = () => {
     }, 60000); // fetch data every minute
   
     return () => clearInterval(interval); // cleanup interval on unmount
-  }, []);
+  }, [rerender]); // rerender as dependency
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
@@ -73,6 +74,7 @@ const Feed = () => {
       setTimeout(() => {
         const searchResult = filterPrompts(e.target.value);
         setSearchedResults(searchResult);
+        setRerender(!rerender); // Toggle rerender state to trigger rerender
       }, 500)
     );
   };
@@ -82,6 +84,7 @@ const Feed = () => {
 
     const searchResult = filterPrompts(tagName);
     setSearchedResults(searchResult);
+    setRerender(!rerender); // Toggle rerender state to trigger rerender
   };
 
   return (
