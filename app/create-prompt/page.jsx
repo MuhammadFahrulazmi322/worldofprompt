@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
-const CreatePrompt = () => {
+const CreatePrompt = ({ triggerRefresh }) => { // Terima prop triggerRefresh
     const router = useRouter();
     const { data: session } = useSession();
     const [submitting, setSubmitting] = useState(false);
@@ -30,8 +30,8 @@ const CreatePrompt = () => {
 
             if(response.ok){
                 router.push('/');
+                triggerRefresh(); // Panggil triggerRefresh setelah berhasil
             }
-
 
         }catch(err){
             console.log(err);
@@ -40,15 +40,15 @@ const CreatePrompt = () => {
             setSubmitting(false);
         }
     }
-  return (
-    <Form
-      type="Create"
-      post={post}
-      setPost={setPost}
-      submitting={submitting}
-      handleSubmit={createPrompt}
-    />
-  )
+    return (
+        <Form
+            type="Create"
+            post={post}
+            setPost={setPost}
+            submitting={submitting}
+            handleSubmit={createPrompt}
+        />
+    )
 }
 
 export default CreatePrompt

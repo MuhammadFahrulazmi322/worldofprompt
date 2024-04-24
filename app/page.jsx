@@ -1,6 +1,19 @@
+"use client"
+
+import React, { useState } from 'react';
 import Feed from "@components/Feed";
+import CreatePrompt from './create-prompt/page'; // Ensure this path is correct
+import EditPrompt from './update-prompt/page'; // Ensure this path is correct
 
 const Home = () => {
+  // State untuk mengelola refresh
+  const [refreshFeed, setRefreshFeed] = useState(0);
+
+  // Fungsi untuk memicu refresh
+  const triggerRefresh = () => {
+    setRefreshFeed(prev => prev + 1); // Menambah nilai refresh
+  };
+
   return (
     <section className="w-full flex-center flex-col">
       <h1 className="head_text text-center">
@@ -13,8 +26,9 @@ const Home = () => {
         modern world to discover, create and share creative prompts
       </p>
 
-      {/* Feed */}
-      <Feed />
+      {/* Feed dengan prop refresh */}
+      
+      <Feed refresh={refreshFeed} />
     </section>
   );
 };

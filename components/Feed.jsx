@@ -18,7 +18,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
   );
 };
 
-const Feed = () => {
+const Feed = ({refresh}) => {
   const [allPosts, setAllPosts] = useState([]);
 
   // Search states
@@ -52,7 +52,7 @@ const Feed = () => {
     }, 60000); // fetch data every minute
   
     return () => clearInterval(interval); // cleanup interval on unmount
-  }, []);
+  }, [refresh]);
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search

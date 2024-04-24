@@ -4,7 +4,7 @@ import Form from '@components/Form'
 import React, { useEffect,useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-const EditPrompt = () => {
+const EditPrompt = ({ triggerRefresh }) => { // Terima prop triggerRefresh
     const router = useRouter();
 
     const searchParams = useSearchParams();
@@ -45,8 +45,8 @@ const EditPrompt = () => {
 
             if(response.ok){
                 router.push('/');
+                triggerRefresh(); // Panggil triggerRefresh setelah berhasil
             }
-
 
         }catch(err){
             console.log(err);
