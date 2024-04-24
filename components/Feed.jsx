@@ -28,7 +28,7 @@ const Feed = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(`/api/prompt?_=${Date.now()}`, {
+      const response = await fetch(`/api/prompt`, {
         headers: {
           "Cache-Control": "no-cache",
         },
