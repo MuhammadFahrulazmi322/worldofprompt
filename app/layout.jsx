@@ -4,6 +4,8 @@ import Provider from "@components/Provider";
 import { RefreshProvider } from "@context/RefreshContext";
 import { Suspense } from "react";
 
+export const revalidate = 900;
+
 export const metadata = {
   title: "World Of Prompt",
   description: "Discover all prompts you need & Share AI prompts",
