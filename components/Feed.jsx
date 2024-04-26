@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import PromptCard from "./PromptCard";
+import { useRefresh } from "@context/RefreshContext";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
@@ -18,8 +19,9 @@ const PromptCardList = ({ data, handleTagClick }) => {
   );
 };
 
-const Feed = ({refresh}) => {
+const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
+  const { refreshFeed } = useRefresh();
 
   // Search states
   const [searchText, setSearchText] = useState("");
@@ -37,16 +39,17 @@ const Feed = ({refresh}) => {
         throw new Error("Failed to fetch data");
       }
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       setAllPosts(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  
+
   useEffect(() => {
+    console.log("dijalankan");
     fetchPosts();
-  }, [refresh]);
+  }, [refreshFeed]);
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
