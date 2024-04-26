@@ -17,7 +17,7 @@ const RootLayout = ({ children }) => {
       <body>
         <Provider>
           <RefreshProvider>
-          <div className="main bg-blue-950">
+          <div className="main bg-[url('/assets/images/bg-wop.jpg')] bg-cover bg-fixed bg-center bg-no-repeat saturate-150 brightness-[60%]">
             <div />
           </div>
           <Suspense>
