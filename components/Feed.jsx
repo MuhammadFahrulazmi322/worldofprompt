@@ -20,7 +20,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
@@ -39,6 +39,7 @@ const Feed = () => {
       }
       const data = await response.json();
       console.log(data)
+      setLoading(false);
       setAllPosts(data);
     } catch (error) {
       console.error("Error fetching data:", error);
