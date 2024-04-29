@@ -3,10 +3,13 @@
 import Form from '@components/Form'
 import React, { useEffect,useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useRefresh } from '@context/RefreshContext'
+import Loading from '@app/profile/loading'
 
-const EditPrompt = ({ triggerRefresh }) => { // Terima prop triggerRefresh
+const EditPrompt = () => { 
+    const { triggerRefresh } = useRefresh();
     const router = useRouter();
-
+    const [isLoading, setIsLoading] = useState(false);
     const searchParams = useSearchParams();
     const promptId = searchParams.get('id');
     const [submitting, setSubmitting] = useState(false);
@@ -15,7 +18,9 @@ const EditPrompt = ({ triggerRefresh }) => { // Terima prop triggerRefresh
         tag: '',
     })
 
+
     useEffect(() => {
+        setIsLoading(true);
         const getPromptDetails = async () => {
             const response = await fetch(`/api/prompt/${promptId}`)
             const data = await response.json();
@@ -24,6 +29,8 @@ const EditPrompt = ({ triggerRefresh }) => { // Terima prop triggerRefresh
                 prompt: data.prompt,
                 tag: data.tag
             })
+
+            setIsLoading(false);
         }
 
         if(promptId) getPromptDetails();
@@ -56,6 +63,7 @@ const EditPrompt = ({ triggerRefresh }) => { // Terima prop triggerRefresh
         }
     }
   return (
+    isLoading ? <Loading /> :
     <Form
       type="Edit"
       post={post}

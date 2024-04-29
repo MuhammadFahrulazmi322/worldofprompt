@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import PromptCard from "./PromptCard";
+import Loading from "@app/profile/loading";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
@@ -20,6 +21,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = ({refresh}) => {
   const [allPosts, setAllPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Search states
   const [searchText, setSearchText] = useState("");
@@ -27,6 +29,7 @@ const Feed = ({refresh}) => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`/api/prompt`, {
         headers: {
@@ -38,14 +41,19 @@ const Feed = ({refresh}) => {
       }
       const data = await response.json();
       console.log(data)
+      setLoading(false);
       setAllPosts(data);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setLoading(false);
     }
   };
   
   useEffect(() => {
-    fetchPosts();
+    //using timeout to fetchposts after 3 second
+    setTimeout(() => {
+      fetchPosts();
+    }, 1000);
   }, [refresh]);
 
   const filterPrompts = (searchtext) => {
@@ -92,16 +100,29 @@ const Feed = ({refresh}) => {
       </form>
 
       {/* All Prompts */}
-      {searchText ? (
-        <PromptCardList
-          data={searchedResults}
-          handleTagClick={handleTagClick}
-        />
+      {loading ? (
+        <Loading />
       ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+        <>
+          {searchText ? (
+            <PromptCardList
+              data={searchedResults}
+              handleTagClick={handleTagClick}
+            />
+          ) : (
+            <PromptCardList
+              data={allPosts}
+              handleTagClick={handleTagClick}
+            />
+          )}
+        </>
       )}
+      
     </section>
   );
 };
 
 export default Feed;
+
+
+
