@@ -18,16 +18,15 @@ const PromptCardList = ({ data, handleTagClick }) => {
   );
 };
 
-const Feed = () => {
+const Feed = ({refresh}) => {
   const [allPosts, setAllPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
+
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    setLoading(true);
     try {
       const response = await fetch(`/api/prompt`, {
         headers: {
@@ -39,14 +38,12 @@ const Feed = () => {
       }
       const data = await response.json();
       console.log(data)
-      setLoading(false);
       setAllPosts(data);
     } catch (error) {
       console.error("Error fetching data:", error);
-      setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     fetchPosts();
   }, [refresh]);
@@ -95,24 +92,14 @@ const Feed = () => {
       </form>
 
       {/* All Prompts */}
-      {loading ? (
-        <Loading />
+      {searchText ? (
+        <PromptCardList
+          data={searchedResults}
+          handleTagClick={handleTagClick}
+        />
       ) : (
-        <>
-          {searchText ? (
-            <PromptCardList
-              data={searchedResults}
-              handleTagClick={handleTagClick}
-            />
-          ) : (
-            <PromptCardList
-              data={allPosts}
-              handleTagClick={handleTagClick}
-            />
-          )}
-        </>
+        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
       )}
-      
     </section>
   );
 };
