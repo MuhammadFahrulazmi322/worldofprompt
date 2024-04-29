@@ -1,19 +1,18 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import Feed from "@components/Feed";
-import CreatePrompt from './create-prompt/page'; // Ensure this path is correct
-import EditPrompt from './update-prompt/page'; // Ensure this path is correct
-import { useRefresh } from '@context/RefreshContext';
+import CreatePrompt from "./create-prompt/page"; // Ensure this path is correct
+import EditPrompt from "./update-prompt/page"; // Ensure this path is correct
+
 
 const Home = () => {
-  const {refreshFeed} = useRefresh();
-  
+
   return (
     <section className="w-full flex-center flex-col">
       <h1 className="head_text text-center">
         Discover & Share
-        <br/>
+        <br />
         <span className="orange_gradient text-center"> AI-Powered Prompts</span>
       </h1>
       <p className="desc text-center">
@@ -22,8 +21,8 @@ const Home = () => {
       </p>
 
       {/* Feed dengan prop refresh */}
-      
-      <Feed refresh={refreshFeed} />
+
+      <Feed />
     </section>
   );
 };

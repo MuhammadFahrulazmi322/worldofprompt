@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 
 import PromptCard from "./PromptCard";
-import Loading from "@app/profile/loading";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
@@ -19,9 +18,8 @@ const PromptCardList = ({ data, handleTagClick }) => {
   );
 };
 
-const Feed = ({refresh}) => {
+const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   // Search states
   const [searchText, setSearchText] = useState("");
@@ -41,19 +39,15 @@ const Feed = ({refresh}) => {
       }
       const data = await response.json();
       console.log(data)
-      setLoading(false);
       setAllPosts(data);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
-    //using timeout to fetchposts after 3 second
-    setTimeout(() => {
-      fetchPosts();
-    }, 1000);
+    fetchPosts();
   }, [refresh]);
 
   const filterPrompts = (searchtext) => {
@@ -123,6 +117,3 @@ const Feed = ({refresh}) => {
 };
 
 export default Feed;
-
-
-
