@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import Feed from "@components/Feed";
-import CreatePrompt from "./create-prompt/page"; // Ensure this path is correct
-import EditPrompt from "./update-prompt/page"; // Ensure this path is correct
 
 
 const Home = () => {

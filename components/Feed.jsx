@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import PromptCard from "./PromptCard";
 import Loading from "@app/profile/loading";
+import useResources from "@hooks/useResources";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
@@ -20,41 +21,22 @@ const PromptCardList = ({ data, handleTagClick }) => {
 };
 
 const Feed = ({refresh}) => {
-  const [allPosts, setAllPosts] = useState([]);
+  const allPosts = useResources();
   const [loading, setLoading] = useState(false);
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
-  const fetchPosts = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/prompt`, {
-        headers: {
-          "Cache-Control": "no-cache",
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await response.json();
-      console.log(data)
-      setLoading(false);
-      setAllPosts(data);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching data:", error);
-    }
-  };
-  
-  useEffect(() => {
-    //set timeout to fetch posts
-    setTimeout(() => {
-      fetchPosts();
-    }, 1000);
-  }, [refresh]);
 
+  useEffect(() => {
+    setLoading(true);
+    if(allPosts) {
+      setLoading(false);
+    }
+  }, [allPosts])
+
+  
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
     return allPosts.filter(
