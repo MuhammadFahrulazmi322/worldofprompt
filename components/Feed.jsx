@@ -8,6 +8,7 @@ import PromptCardList from "./PromptCardList";
 
 const Feed = () => {
   const allPosts = useResources();
+  console.log(allPosts);
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
