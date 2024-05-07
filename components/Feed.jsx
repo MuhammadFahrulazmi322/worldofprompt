@@ -4,19 +4,38 @@ import { useState} from "react";
 
 import useResources from "@hooks/useResources";
 import PromptCardList from "./PromptCardList";
+import usePolling from "@hooks/usePolling";
 
 
 const Feed = () => {
-  const allPosts = useResources();
-  console.log(allPosts);
+  // const allPosts = useResources();
+  // console.log(allPosts);
   // Search states
+  const [data, setData] = useState([]);
+
+  // Fungsi untuk mengambil data dari server MongoDB
+  const fetchData = async () => {
+    try {
+      const response = await fetch("/api/prompt");
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const newData = await response.json();
+      setData(newData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Menggunakan polling untuk memperbarui data setiap 5 detik
+  usePolling(fetchData, 5000);
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
-    return allPosts.filter(
+    return data.filter(
       (item) =>
         regex.test(item.creator.username) ||
         regex.test(item.tag) ||
@@ -63,7 +82,7 @@ const Feed = () => {
           handleTagClick={handleTagClick}
         />
       ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+        <PromptCardList data={data} handleTagClick={handleTagClick} />
       )}
     </section>
   );
