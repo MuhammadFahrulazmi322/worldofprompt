@@ -1,40 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import useResources from "@hooks/useResources";
-import PromptCardList from "./PromptCardList";
-import usePolling from "@hooks/usePolling";
+import PromptCard from "./PromptCard";
+import Loading from "@app/loading";
+
+const PromptCardList = ({ data, handleTagClick }) => {
+  return (
+    <div className="mt-16 prompt_layout">
+      {data.map((post) => (
+        <PromptCard
+          key={post._id}
+          post={post}
+          handleTagClick={handleTagClick}
+        />
+      ))}
+    </div>
+  );
+};
 
 const Feed = () => {
-  // const allPosts = useResources();
-  // console.log(allPosts);
+  const [allPosts, setAllPosts] = useState([]);
+  const [loading, setLoading] = useState();
+
   // Search states
-  const [data, setData] = useState([]);
-
-  // Fungsi untuk mengambil data dari server MongoDB
-  const fetchData = async () => {
-    try {
-      const response = await fetch("/api/prompt");
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const newData = await response.json();
-      setData(newData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  // Menggunakan polling untuk memperbarui data setiap 5 detik
-  usePolling(fetchData, 5000);
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
+  const fetchPosts = async () => {
+    const response = await fetch("/api/prompt", {
+      next: {
+        revalidate: 0,
+      },
+    });
+    const data = await response.json();
+
+    setAllPosts(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchPosts();
+  }, []);
+
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
-    return data.filter(
+    return allPosts.filter(
       (item) =>
         regex.test(item.creator.username) ||
         regex.test(item.tag) ||
@@ -75,13 +88,14 @@ const Feed = () => {
         />
       </form>
 
+      {/* All Prompts */}
       {searchText ? (
         <PromptCardList
           data={searchedResults}
           handleTagClick={handleTagClick}
         />
       ) : (
-        <PromptCardList data={data} handleTagClick={handleTagClick} />
+        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
       )}
     </section>
   );
