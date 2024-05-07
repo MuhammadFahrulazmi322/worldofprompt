@@ -1,7 +1,11 @@
+"use client"
 
 import Feed from "@components/Feed";
+import {useRouter} from 'next/navigation';
 
 const Home = () => {
+    const router = useRouter();
+
   return (
     <>     
         
@@ -19,7 +23,9 @@ const Home = () => {
           tool for modern world to discover, create and share creative
           prompts
         </p>
-        <Feed />
+        <button className="mt-10 rounded-full bg-orange-500 px-4 py-2 text-white text-sm"
+        onClick={() => router.push('/data')}
+        >Open Prompt</button>
         </section>
 
     </>
