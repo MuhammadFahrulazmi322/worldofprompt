@@ -20,7 +20,7 @@ const PromptCardList = ({ data, handleTagClick }) => {
   );
 };
 
-const Feed = ({refresh}) => {
+const Feed = ({ refresh }) => {
   const allPosts = useResources();
   const [loading, setLoading] = useState(false);
   // Search states
@@ -28,15 +28,6 @@ const Feed = ({refresh}) => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
-
-  useEffect(() => {
-    setLoading(true);
-    if(allPosts) {
-      setLoading(false);
-    }
-  }, [allPosts])
-
-  
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
     return allPosts.filter(
@@ -80,21 +71,13 @@ const Feed = ({refresh}) => {
         />
       </form>
 
-      {loading ? (
-        <div className="mt-10 w-full flex-center">
-          <Loading />
-        </div>
+      {searchText ? (
+        <PromptCardList
+          data={searchedResults}
+          handleTagClick={handleTagClick}
+        />
       ) : (
-        <>
-          {searchText ? (
-            <PromptCardList
-              data={searchedResults}
-              handleTagClick={handleTagClick}
-            />
-          ) : (
-            <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
-          )}
-        </>
+        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
       )}
     </section>
   );

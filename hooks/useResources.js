@@ -7,9 +7,7 @@ const useResources = () => {
         const fetchPosts = async () => {
             try {
               const response = await fetch(`/api/prompt`, {
-                headers: {
-                  "Cache-Control": "no-cache",
-                },
+                method: "GET",
               });
               if (!response.ok) {
                 throw new Error("Failed to fetch data");
