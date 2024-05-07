@@ -6,9 +6,7 @@ import useResources from "@hooks/useResources";
 import PromptCardList from "./PromptCardList";
 import usePolling from "@hooks/usePolling";
 
-const Feed = () => {
-  const allPosts = useResources();
-
+const Feed = async () => {
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
@@ -45,7 +43,7 @@ const Feed = () => {
 
   return (
     <section className="feed">
-      <form className="relative w-full flex-center">
+      {/* <form className="relative w-full flex-center">
         <input
           type="text"
           placeholder="Search for a tag or a username"
@@ -54,16 +52,17 @@ const Feed = () => {
           required
           className="search_input peer"
         />
-      </form>
+      </form> */}
 
-      {searchText ? (
+      <PromptCardList handleTagClick={handleTagClick} />
+      {/* {searchText ? (
         <PromptCardList
           data={searchedResults}
           handleTagClick={handleTagClick}
         />
       ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
-      )}
+        
+      )} */}
     </section>
   );
 };
