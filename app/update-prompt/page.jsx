@@ -4,7 +4,7 @@ import Form from '@components/Form'
 import React, { useEffect,useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useRefresh } from '@context/RefreshContext'
-import Loading from '@app/profile/loading'
+import Loading from '@app/loading'
 
 const EditPrompt = () => { 
     const { triggerRefresh } = useRefresh();

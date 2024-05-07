@@ -1,9 +1,9 @@
     "use client"
 
+import Loading from "@app/loading"
     import Profile from "@components/Profile"
 import { useSearchParams } from "next/navigation"
     import { useState, useEffect } from "react"
-    import Loading from "../loading"
 
     const userProfile = ({params}) => {
         const searchParams = useSearchParams();

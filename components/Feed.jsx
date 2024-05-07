@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 
 import PromptCard from "./PromptCard";
-import Loading from "@app/profile/loading";
 import useResources from "@hooks/useResources";
+import Loading from "@app/loading";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
