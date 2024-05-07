@@ -1,28 +1,31 @@
 import { useEffect, useState } from "react";
 
 const useResources = () => {
-    const [resources, setResources] = useState([]);
+  const [resources, setResources] = useState([]);
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-            try {
-              const response = await fetch(`/api/prompt`, {
-                method: "GET",
-              });
-              if (!response.ok) {
-                throw new Error("Failed to fetch data");
-              }
-              const data = await response.json();
-              setResources(data);
-            } catch (error) {
-              console.error("Error fetching data:", error);
-            }
-          };
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch(`/api/prompt`, {
+          method: "GET",
+          next: {
+            revalidate: 0,
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setResources(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-        fetchPosts();
-    }, []);
+    fetchPosts();
+  }, []);
 
-    return resources;
-}
+  return resources;
+};
 
 export default useResources;

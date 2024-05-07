@@ -5,7 +5,6 @@ const Prompt = () => {
   return (
     <>
     <Feed/>
-
     </>
   )
 }
