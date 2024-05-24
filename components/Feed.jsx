@@ -1,25 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import PromptCard from "./PromptCard";
-import Loading from "@/app/loading"; // Pastikan path ini benar
+import { useState, useEffect } from "react";
 
-export const dynamic = 'force-dynamic';
+import PromptCard from "./PromptCard";
+import Loading from "@app/loading";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
     <div className="mt-16 prompt_layout">
-      {data.length > 0 ? (
-        data.map((post) => (
-          <PromptCard
-            key={post._id}
-            post={post}
-            handleTagClick={handleTagClick}
-          />
-        ))
-      ) : (
-        <p className="text-center text-gray-500">Product is coming soon</p>
-      )}
+      {data.map((post) => (
+        <PromptCard
+          key={post._id}
+          post={post}
+          handleTagClick={handleTagClick}
+        />
+      ))}
     </div>
   );
 };
@@ -34,28 +29,21 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    try {
-      const response = await fetch("/api/prompt", {
-        cache: "no-store", // Disable caching
-      });
-      const data = await response.json();
-      console.log("Fetched data:", data); // Log data
-  
-      setAllPosts(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Failed to fetch posts:", error);
-    }
+    console.log("Fetching posts..."); // Tambahkan log ini untuk debugging
+    const response = await fetch("/api/prompt");
+    const data = await response.json();
+    console.log("Fetched data:", data); // Tambahkan log ini untuk memastikan data diterima
+    setAllPosts(data);
+    setLoading(false);
   };
-  
+
   useEffect(() => {
     setLoading(true);
     fetchPosts();
   }, []);
-  
 
-  const filterPrompts = (searchText) => {
-    const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
+  const filterPrompts = (searchtext) => {
+    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
     return allPosts.filter(
       (item) =>
         regex.test(item.creator.username) ||
@@ -97,9 +85,8 @@ const Feed = () => {
         />
       </form>
 
-      {loading ? (
-        <Loading />
-      ) : searchText ? (
+      {/* All Prompts */}
+      {searchText ? (
         <PromptCardList
           data={searchedResults}
           handleTagClick={handleTagClick}
