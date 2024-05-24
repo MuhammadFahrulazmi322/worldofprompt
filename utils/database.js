@@ -16,11 +16,13 @@ export const connectToDB = async () => {
     await mongoose.connect(process.env.MONGODB_URI, {
       // Attempt to connect to the MongoDB database
       dbName: "worldofprompt", // Specify the database name
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
     isConnected = true; // Set the isConnected flag to true upon successful connection
     console.log("MongoDB connected"); // Log message upon successful connection
   } catch (error) {
     // Catch block to handle any errors during connection
-    console.log(error); // Log the error if the connection fails
+    console.log("Error connecting to MongoDB:", error); // Log the error if the connection fails
   }
 };

@@ -1,27 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
+import React, { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
-import Loading from "@app/loading";
+import Loading from "@/app/loading"; // Pastikan path ini benar
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
     <div className="mt-16 prompt_layout">
-      {data.map((post) => (
-        <PromptCard
-          key={post._id}
-          post={post}
-          handleTagClick={handleTagClick}
-        />
-      ))}
+      {data.length > 0 ? (
+        data.map((post) => (
+          <PromptCard
+            key={post._id}
+            post={post}
+            handleTagClick={handleTagClick}
+          />
+        ))
+      ) : (
+        <p className="text-center text-gray-500">Product is coming soon</p>
+      )}
     </div>
   );
 };
 
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
 
   // Search states
   const [searchText, setSearchText] = useState("");
@@ -29,11 +32,8 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt", {
-      next: {
-        revalidate: 0,
-      },
-    });
+    setLoading(true);
+    const response = await fetch("/api/prompt");
     const data = await response.json();
 
     setAllPosts(data);
@@ -41,12 +41,11 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
     fetchPosts();
   }, []);
 
-  const filterPrompts = (searchtext) => {
-    const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
+  const filterPrompts = (searchText) => {
+    const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
     return allPosts.filter(
       (item) =>
         regex.test(item.creator.username) ||
@@ -88,8 +87,9 @@ const Feed = () => {
         />
       </form>
 
-      {/* All Prompts */}
-      {searchText ? (
+      {loading ? (
+        <Loading />
+      ) : searchText ? (
         <PromptCardList
           data={searchedResults}
           handleTagClick={handleTagClick}
