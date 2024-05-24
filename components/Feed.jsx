@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
 import Loading from "@/app/loading"; // Pastikan path ini benar
 
+export const dynamic = 'force-dynamic';
+
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
     <div className="mt-16 prompt_layout">
@@ -32,19 +34,25 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt", {
+    try {
+      const response = await fetch("/api/prompt", {
         cache: "no-store", // Disable caching
-    });
-    const data = await response.json();
-
-    setAllPosts(data);
-    setLoading(false);
-};
-
-
+      });
+      const data = await response.json();
+      console.log("Fetched data:", data); // Log data
+  
+      setAllPosts(data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch posts:", error);
+    }
+  };
+  
   useEffect(() => {
+    setLoading(true);
     fetchPosts();
   }, []);
+  
 
   const filterPrompts = (searchText) => {
     const regex = new RegExp(searchText, "i"); // 'i' flag for case-insensitive search
