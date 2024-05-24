@@ -7,7 +7,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate',
+            value: 'no-store', // Nonaktifkan cache untuk endpoint API
           },
         ],
       },
